@@ -34,7 +34,10 @@ int main(int argc, char *argv[])
 
     if (pid == 0) // figlio
     {
-        close(p1p0[0]);                               // chiudo lettura
+        close(p1p0[0]); // chiudo lettura
+        close(1);       // chiudo stdin per liberare uno spazio da assegnare alla dup
+        dup(p1p0[1]);
+        close(p1p0[1]);
         execl("/bin/cat", "cat", argv[1], (char *)0); // eseguo cat
         return -1;
     }
@@ -43,7 +46,10 @@ int main(int argc, char *argv[])
 
     if (pid == 0)
     {
-        close(p1p0[1]);
+        close(p1p0[1]); // chiudo scrittura
+        close(0);       // chiudo stdout per liberare uno spazio da assegnare alla dup
+        dup(p1p0[0]);
+        close(p1p0[0]);
         execl("/bin/more", "more", (char *)0);
         return -1;
     }

@@ -1,3 +1,13 @@
+/* Scrivere un programma concorrente che realizzi il seguente comando:
+
+cat file.txt | wc
+
+il processo p2 deve rimandare l'output di wc al padre, il quale lo scriverà
+su un file chiamato wc.txt
+
+il nome del file "file.txt" deve essere passato come argomento in argv[1]
+*/
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
