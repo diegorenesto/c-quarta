@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         {
             close(p1p0[1]);
             close(p1p0[0]);
-            printf("Numero di parole trovate: %s\n", cont);
+            printf("Numero di parole trovate: %d\n", conttt);
             exit(1);
         }
 
@@ -55,8 +55,11 @@ int main(int argc, char *argv[])
             return -1;
         }
         read(p1p0[0], cont, sizeof(cont));
-        printf("Il file ha %d '%s'\n", atoi(cont), parola); // stampo il numero di occorrenze
-        conttt += atoi(cont);                               // incremento il contatore totale
+        printf("Il file ha %d '%s'\n", atoi(), parola); // stampo il numero di occorrenze
+        conttt += atoi(cont);
+
+        close(p1p0[1]);
+        close(p1p0[0]); // incremento il contatore totale
     }
 
     return 0;
