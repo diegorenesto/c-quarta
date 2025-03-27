@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     }
 
     // Dichiarazione variabili
-    int p1p0[2], p2p0[2], pid, conttt = 0;
+    int p1p0[2], p2p1[2], pid, conttt = 0;
     char parola[100], cont[1000];
 
     while (1)
@@ -47,8 +47,8 @@ int main(int argc, char *argv[])
         {
             close(p1p0[0]);
             close(p1p0[1]);
-            close(p2p0[0]);
-            close(p2p0[1]);
+            close(p2p1[0]);
+            close(p2p1[1]);
             printf("Numero di parole trovate: %d\n", conttt);
             exit(1);
         }
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
             return -1;
         }
 
-        pipe(p2p0); // creo la seconda pipe
+        pipe(p2p1); // creo la seconda pipe
         pid = fork();
 
         if (pid == 0)
@@ -77,10 +77,10 @@ int main(int argc, char *argv[])
             dup(p1p0[0]);
             close(p1p0[0]);
 
-            close(p2p0[0]); // chiudo la lettura
+            close(p2p1[0]); // chiudo la lettura
             close(1);       // chiudo lo stdout e ci metto la seconda pipe
-            dup(p2p0[1]);
-            close(p2p0[1]);
+            dup(p2p1[1]);
+            close(p2p1[1]);
 
             execl("/usr/bin/wc", "wc", "-l", (char *)0);
             return -1;
@@ -88,11 +88,11 @@ int main(int argc, char *argv[])
 
         close(p1p0[0]);
         close(p1p0[1]);
-        close(p2p0[1]);
+        close(p2p1[1]);
         // non chiudo p2p0[0] perchè devo leggere
 
-        read(p2p0[0], cont, sizeof(cont)); // leggo il numero di occorrenze e lo salvo in cont
-        close(p2p0[0]);
+        read(p2p1[0], cont, sizeof(cont)); // leggo il numero di occorrenze e lo salvo in cont
+        close(p2p1[0]);
         printf("Il file contiene %d '%s'\n", atoi(cont), parola);
         conttt += atoi(cont); // incremento il contatore totale
     }
